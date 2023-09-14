@@ -123,8 +123,8 @@ class PublicationManager(models.Manager):
     def create(self, **kwargs):
         constraint_fields = [field for group in self.model._meta.unique_together for field in group]
         for field in constraint_fields:
-            if not kwargs.get(field, None):
-                default_val = self.model._meta.fields_map[field]
+            if kwargs.get(field, None) is None:
+                default_val = self.model._meta.get_field(field).default
                 kwargs[field] = default_val
 
         return super().create(**kwargs)
@@ -132,7 +132,7 @@ class PublicationManager(models.Manager):
 
 class Publication(models.Model):
     title = models.CharField(max_length=30)
-    create_date = models.DateTimeField(null=True, blank=True, default='2000-01-01')
+    create_date = models.DateTimeField(null=True, blank=True, default='2000-01-01T00:00:00+00:00')
 
     objects = PublicationManager()
 
