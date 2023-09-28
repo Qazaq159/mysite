@@ -3,6 +3,7 @@ import typing
 
 import django.utils.timezone
 from django.db import models
+from django.db.models.fields import NOT_PROVIDED
 from django.utils.timezone import now
 
 
@@ -118,23 +119,23 @@ class Flight(models.Model):
     last_destination = models.CharField(max_length=3)
 
 
-class PublicationManager(models.Manager):
-
-    def create(self, **kwargs):
-        constraint_fields = [field for group in self.model._meta.unique_together for field in group]
-        for field in constraint_fields:
-            if kwargs.get(field, None) is None:
-                default_val = self.model._meta.get_field(field).default
-                kwargs[field] = default_val
-
-        return super().create(**kwargs)
-
-
 class Publication(models.Model):
     title = models.CharField(max_length=30)
     create_date = models.DateTimeField(null=True, blank=True, default='2000-01-01T00:00:00+00:00')
 
-    objects = PublicationManager()
+    def __init__(self, *args, **kwargs):
+        constraint_fields = [field for group in self._meta.unique_together for field in group]
+        for field in constraint_fields:
+            try:
+                val = kwargs.get(field, NOT_PROVIDED)
+                default_val = self._meta.get_field(field).default
+                assert val is None
+                assert default_val != NOT_PROVIDED, f'{field} must have not None default value, cause it\'s constraint'
+                kwargs[field] = default_val
+            except:  # noqa
+                pass
+
+        super().__init__(*args, **kwargs)
 
     def __str__(self):
         return self.title
