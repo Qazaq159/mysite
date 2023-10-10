@@ -132,7 +132,7 @@ class PublicationManager(models.Manager):
 
 class Publication(models.Model):
     title = models.CharField(max_length=30)
-    create_date = models.DateTimeField(null=True, blank=True, default='2000-01-01T00:00:00+00:00')
+    create_date = models.DateTimeField(null=True, blank=True)
 
     objects = PublicationManager()
 
