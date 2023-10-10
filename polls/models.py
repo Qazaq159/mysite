@@ -134,7 +134,7 @@ class Publication(models.Model):
     title = models.CharField(max_length=30)
     create_date = models.DateTimeField(null=True, blank=True)
 
-    objects = PublicationManager()
+    # objects = PublicationManager()
 
     def __str__(self):
         return self.title
