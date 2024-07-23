@@ -9,7 +9,7 @@ from django.utils.timezone import now
 class Question(models.Model):
 
     pub_date = models.DateTimeField('date published', auto_now_add=True)
-    opened = models.NullBooleanField(blank=True)
+    opened = models.BooleanField(null=True)
 
     def __set_text(self, value: str) -> None:
         self.__post_save_on_changes_data()

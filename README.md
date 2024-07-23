@@ -1,6 +1,6 @@
 
-django 1.11.20
+django 4.2.14
 -
 
-python 3.7.14
+python 3.9
 -

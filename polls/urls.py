@@ -1,7 +1,7 @@
-from django.conf.urls import url
+from django.urls import path
 from polls import views
 
 urlpatterns = [
-    url('', views.index, name='index'),
-    url('run_thread', views.run_thread)
+    path('', views.index, name='index'),
+    path('run_thread', views.run_thread)
 ]
