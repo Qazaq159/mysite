@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'polls.apps.PollsConfig',
+    'django_celery_beat',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -127,3 +128,19 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers.DatabaseScheduler'
+
+CELERY_QUEUE_ONE = 'one'
+CELERY_QUEUE_TWO = 'two'
+CELERY_QUEUE_THREE = 'three'
+
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
+CELERY_TASK_ROUTES = {
+    'polls.periodic.task_one': CELERY_QUEUE_ONE,
+    'polls.periodic.task_two': CELERY_QUEUE_ONE,
+    'polls.periodic.task_three': CELERY_QUEUE_ONE,
+    'polls.periodic.task_four': CELERY_QUEUE_ONE,
+    'polls.periodic.task_five': CELERY_QUEUE_ONE,
+    'polls.periodic.task_six': CELERY_QUEUE_ONE,
+}
