@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'polls.apps.PollsConfig',
+    'mstools.apps.MstoolsConfig',
     'django_celery_beat',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -143,4 +144,37 @@ CELERY_TASK_ROUTES = {
     'polls.periodic.task_four': CELERY_QUEUE_ONE,
     'polls.periodic.task_five': CELERY_QUEUE_ONE,
     'polls.periodic.task_six': CELERY_QUEUE_ONE,
+}
+
+METRICS_LOGGER_NAME = 'mysite.metrics'
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+
+    'formatters': {
+        'json': {
+            '()': 'mstools.json_formatters.SimpleJsonFormatter'
+        },
+    },
+
+    'handlers': {
+        'metrics_log_handler': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': BASE_DIR.parent / 'logs' / 'metrics.log',
+            'backupCount': 200,
+            'maxBytes': 5 * 1024 * 1024,
+            'formatter': 'json',
+        }
+    },
+
+    'loggers': {
+        METRICS_LOGGER_NAME: {
+            'handlers': ['metrics_log_handler'],
+            'level': 'INFO',
+            'propagate': True,
+        }
+    }
 }
