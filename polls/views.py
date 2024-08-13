@@ -1,5 +1,6 @@
-from django.shortcuts import render
 from django.http.response import HttpResponse
+from django.http import JsonResponse
+
 
 # Create your views here.
 def index(request):
@@ -7,4 +8,6 @@ def index(request):
 
 
 def run_thread(request):
-    return HttpResponse("Task successfully started!")
+    import time
+    time.sleep(5)
+    return JsonResponse({"body": "Task successfully started!"})
