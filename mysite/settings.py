@@ -80,12 +80,22 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME'),
-        'USER': os.getenv('DB_USER'),
-        'PASSWORD': os.getenv('DB_PASSWORD'),
-        'HOST': os.getenv('DB_HOST')
+        'NAME': os.getenv('MASTER_DB_NAME'),
+        'USER': os.getenv('MASTER_DB_USER'),
+        'PASSWORD': os.getenv('MASTER_DB_PASSWORD'),
+        'HOST': os.getenv('MASTER_DB_HOST')
+    },
+    'replica': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('REPLICA_DB_NAME'),
+        'USER': os.getenv('REPLICA_DB_USER'),
+        'PASSWORD': os.getenv('REPLICA_DB_PASSWORD'),
+        'HOST': os.getenv('REPLICA_DB_HOST'),
     }
 }
+
+USE_REPLICA_DATABASE = os.getenv('USE_REPLICA_DATABASE', default='false').lower() == 'true'
+DATABASE_ROUTERS = ['mysite.router.ReplicaRouter']
 
 
 # Password validation
