@@ -150,6 +150,7 @@ class Publication(models.Model):
 class Article(models.Model):
     headline = models.CharField(max_length=100)
     publications = models.ManyToManyField(Publication, null=True)
+    name = models.CharField(max_length=100, null=True, name='name1')
 
     def __str__(self):
         return self.headline
