@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
+import sys
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -78,22 +79,37 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('MASTER_DB_NAME'),
-        'USER': os.getenv('MASTER_DB_USER'),
-        'PASSWORD': os.getenv('MASTER_DB_PASSWORD'),
-        'HOST': os.getenv('MASTER_DB_HOST')
-    },
-    'replica': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('REPLICA_DB_NAME'),
-        'USER': os.getenv('REPLICA_DB_USER'),
-        'PASSWORD': os.getenv('REPLICA_DB_PASSWORD'),
-        'HOST': os.getenv('REPLICA_DB_HOST'),
+# Force PostgreSQL when running tests; otherwise prefer PostgreSQL if env vars provided, fallback to SQLite.
+if 'test' in sys.argv:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv('MASTER_DB_NAME', 'postgres'),
+            'USER': os.getenv('MASTER_DB_USER', 'postgres'),
+            'PASSWORD': os.getenv('MASTER_DB_PASSWORD', 'postgres'),
+            'HOST': os.getenv('MASTER_DB_HOST'),
+            'PORT': os.getenv('MASTER_DB_PORT'),
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv('MASTER_DB_NAME'),
+            'USER': os.getenv('MASTER_DB_USER'),
+            'PASSWORD': os.getenv('MASTER_DB_PASSWORD'),
+            'HOST': os.getenv('MASTER_DB_HOST'),
+            'PORT': os.getenv('MASTER_DB_PORT'),
+        },
+        'replica': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv('REPLICA_DB_NAME'),
+            'USER': os.getenv('REPLICA_DB_USER'),
+            'PASSWORD': os.getenv('REPLICA_DB_PASSWORD'),
+            'HOST': os.getenv('REPLICA_DB_HOST'),
+            'PORT': os.getenv('REPLICA_DB_PORT', '5432'),
+        }
+    }
 
 USE_REPLICA_DATABASE = os.getenv('USE_REPLICA_DATABASE', default='false').lower() == 'true'
 DATABASE_ROUTERS = ['mysite.router.ReplicaRouter']
