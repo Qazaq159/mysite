@@ -4,6 +4,7 @@ import typing
 import django.utils.timezone
 from django.db import models
 from django.utils.timezone import now
+from translated_fields import TranslatedField
 
 
 class Question(models.Model):
@@ -131,20 +132,21 @@ class PublicationManager(models.Manager):
 
 
 class Publication(models.Model):
-    title = models.CharField(max_length=30)
+    title = TranslatedField(models.CharField(max_length=30))
     create_date = models.DateTimeField(null=True, blank=True)
 
     # objects = PublicationManager()
 
     def __str__(self):
-        return self.title
+        return self.title_en
 
     class Meta:
-        ordering = ('title', )
-        unique_together = (
-            'title',
-            'create_date'
-        )
+        # ordering = ('title_en', )
+        # unique_together = (
+        #     'title_en',
+        #     'create_date'
+        # )
+        pass
 
 
 class Article(models.Model):

@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'mstools.apps.MstoolsConfig',
     'django_celery_beat',
     'rest_framework',
+    'translated_fields',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -138,6 +139,12 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
+
+LANGUAGES = [
+    ('en', 'English'),
+    ('kk', 'Kazakh'),
+    ('ru', 'Russian'),
+]
 
 TIME_ZONE = 'UTC'
 
