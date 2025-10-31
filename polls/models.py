@@ -135,7 +135,7 @@ class Publication(models.Model):
     title = TranslatedField(models.CharField(max_length=30))
     create_date = models.DateTimeField(null=True, blank=True)
 
-    # objects = PublicationManager()
+    objects = PublicationManager()
 
     def __str__(self):
         return f'{self.title_en} - {self.create_date}'
