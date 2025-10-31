@@ -138,7 +138,7 @@ class Publication(models.Model):
     # objects = PublicationManager()
 
     def __str__(self):
-        return f'{self.title_en}'
+        return f'{self.title_en} - {self.create_date}'
 
     class Meta:
         # ordering = ('title_en', )
