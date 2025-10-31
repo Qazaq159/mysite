@@ -29,7 +29,7 @@ def index(request):
 
 def run_thread(request):
     import time
-    time.sleep(5)
+    time.sleep(6)
     return JsonResponse({"body": "Task successfully started!"})
 
 
