@@ -122,11 +122,11 @@ class Flight(models.Model):
 class PublicationManager(models.Manager):
 
     def create(self, **kwargs):
-        constraint_fields = [field for group in self.model._meta.unique_together for field in group]
-        for field in constraint_fields:
-            if kwargs.get(field, None) is None:
-                default_val = self.model._meta.get_field(field).default
-                kwargs[field] = default_val
+        # constraint_fields = [field for group in self.model._meta.unique_together for field in group]
+        # for field in constraint_fields:
+        #     if kwargs.get(field, None) is None:
+        #         default_val = self.model._meta.get_field(field).default
+        #         kwargs[field] = default_val
 
         return super().create(**kwargs)
 
@@ -135,10 +135,10 @@ class Publication(models.Model):
     title = TranslatedField(models.CharField(max_length=30))
     create_date = models.DateTimeField(null=True, blank=True)
 
-    # objects = PublicationManager()
+    objects = PublicationManager()
 
     def __str__(self):
-        return self.title_en
+        return f'{self.title_en} - {self.create_date}'
 
     class Meta:
         # ordering = ('title_en', )
